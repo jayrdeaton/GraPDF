@@ -77,21 +77,20 @@ export const createProgram = () =>
       }
 
       if (isDryRun) {
-        const spinner = new Spinner({ front: cosmetic.faint('Scanning for PDFs') })
+        const spinner = new Spinner({ text: cosmetic.faint('Scanning for PDFs') })
         spinner.start()
         try {
           const pdfUrls = await findPdfUrls(url, bookletOptions)
-          spinner.stop()
-          console.log(cosmetic.bold(`${pdfUrls.length} PDF${pdfUrls.length !== 1 ? 's' : ''} found:`))
+          spinner.succeed(cosmetic.bold(`${pdfUrls.length} PDF${pdfUrls.length !== 1 ? 's' : ''} found:`)).stop()
           for (const u of pdfUrls) console.log(`  ${cosmetic.cyan(u)}`)
         } catch (err) {
-          spinner.stop(cosmetic.red(String(err)))
+          spinner.fail(cosmetic.red(String(err))).stop()
           process.exit(1)
         }
         return
       }
 
-      const spinner = new Spinner({ front: cosmetic.faint('Scanning for PDFs') })
+      const spinner = new Spinner({ text: cosmetic.faint('Scanning for PDFs') })
       spinner.start()
 
       try {
@@ -108,9 +107,9 @@ export const createProgram = () =>
 
         spinner.message(cosmetic.faint(`Saving ${dest}`))
         await fs.writeFile(dest, bytes)
-        spinner.stop(`${pdfCount} PDF${pdfCount !== 1 ? 's' : ''} saved to ${cosmetic.underline.cyan(dest)}`)
+        spinner.succeed(`${pdfCount} PDF${pdfCount !== 1 ? 's' : ''} saved to ${cosmetic.underline.cyan(dest)}`).stop()
       } catch (err) {
-        spinner.stop(cosmetic.red(String(err)))
+        spinner.fail(cosmetic.red(String(err))).stop()
         process.exit(1)
       }
     })
