@@ -1,9 +1,9 @@
 /* eslint-disable no-console */
 import cosmeticLib from 'cosmetic'
 import fs from 'fs/promises'
-import { Spinner } from 'termpulse'
 import path from 'path'
 import { command } from 'termkit'
+import { Spinner } from 'termpulse'
 
 import { buildBooklet, findPdfUrls } from './booklet'
 
@@ -94,7 +94,7 @@ export const createProgram = () =>
       spinner.start()
 
       try {
-        const { pdfCount, attempted, bytes } = await buildBooklet(url, {
+        const { pdfCount, bytes } = await buildBooklet(url, {
           ...bookletOptions,
           onProgress: (stage, completed, total) => {
             const plural = (n: number) => (n !== 1 ? 's' : '')

@@ -13,13 +13,7 @@ export const downloadPdf = async (url: string, referer: string, timeout = 30_000
   }
 }
 
-export const downloadAll = async (
-  urls: string[],
-  referer: string,
-  concurrent = 5,
-  timeout = 30_000,
-  onProgress?: (completed: number, total: number) => void
-): Promise<Buffer[]> => {
+export const downloadAll = async (urls: string[], referer: string, concurrent = 5, timeout = 30_000, onProgress?: (completed: number, total: number) => void): Promise<Buffer[]> => {
   const results: (Buffer | null)[] = []
   let completed = 0
   for (let i = 0; i < urls.length; i += concurrent) {
