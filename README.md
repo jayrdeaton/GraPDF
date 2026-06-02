@@ -1,30 +1,30 @@
-# pdflet
+# pdfbind
 
 Scrape all PDFs linked on a webpage and merge them into one downloadable booklet.
 
 ```sh
-pdflet https://example.com/coloring-pages/
+pdfbind https://example.com/coloring-pages/
 ```
 
 ## Installation
 
 ```sh
-npm install -g pdflet
+npm install -g pdfbind
 ```
 
 Or run without installing:
 
 ```sh
-npx pdflet <url>
+npx pdfbind <url>
 ```
 
 ## CLI
 
 ```sh
-pdflet <url> [output]
+pdfbind <url> [output]
 ```
 
-If no output path is given, the filename is derived from the URL slug (e.g. `coloring-pages.pdf`). If a name is given without an extension, `.pdf` is added automatically. Existing files are never overwritten — pdflet increments the filename (`booklet-1.pdf`, `booklet-2.pdf`, etc.).
+If no output path is given, the filename is derived from the URL slug (e.g. `coloring-pages.pdf`). If a name is given without an extension, `.pdf` is added automatically. Existing files are never overwritten — pdfbind increments the filename (`booklet-1.pdf`, `booklet-2.pdf`, etc.).
 
 ### Options
 
@@ -75,41 +75,41 @@ More specific flags override less specific ones. `--trim 20 --trim-bottom 40` cr
 
 ```sh
 # Basic usage
-pdflet https://example.com/coloring-pages/
+pdfbind https://example.com/coloring-pages/
 
 # Custom output filename
-pdflet https://example.com/coloring-pages/ my-booklet.pdf
+pdfbind https://example.com/coloring-pages/ my-booklet.pdf
 
 # Remove a 40pt branding border from the bottom of each page
-pdflet https://example.com/coloring-pages/ --trim-bottom 40
+pdfbind https://example.com/coloring-pages/ --trim-bottom 40
 
 # Preview what would be downloaded before committing
-pdflet https://example.com/coloring-pages/ --dry-run
+pdfbind https://example.com/coloring-pages/ --dry-run
 
 # Limit to the first 5 PDFs, sorted alphabetically
-pdflet https://example.com/coloring-pages/ --sort --limit 5
+pdfbind https://example.com/coloring-pages/ --sort --limit 5
 
 # Only grab PDFs whose URLs contain "chapter"
-pdflet https://example.com/book/ --include chapter
+pdfbind https://example.com/book/ --include chapter
 
 # Exclude any PDFs whose URLs contain "sample"
-pdflet https://example.com/book/ --exclude sample
+pdfbind https://example.com/book/ --exclude sample
 
 # Scope link search to a specific section of the page
-pdflet https://example.com/downloads/ --selector .downloads-grid
+pdfbind https://example.com/downloads/ --selector .downloads-grid
 
 # Combine filters: search within a section, include a pattern, trim the bottom
-pdflet https://example.com/coloring-pages/ --selector .content --include pokemon --trim-bottom 40
+pdfbind https://example.com/coloring-pages/ --selector .content --include pokemon --trim-bottom 40
 ```
 
 ## Programmatic API
 
 ```sh
-npm install pdflet
+npm install pdfbind
 ```
 
 ```ts
-import { buildBooklet, findPdfUrls, mergePdfs, downloadAll, extractPdfLinks } from 'pdflet'
+import { buildBooklet, findPdfUrls, mergePdfs, downloadAll, extractPdfLinks } from 'pdfbind'
 ```
 
 ### `buildBooklet(url, options?): Promise<{ pdfCount, bytes }>`
@@ -150,7 +150,7 @@ const urls = await findPdfUrls('https://example.com/coloring-pages/', {
 Merge an array of PDF buffers into one.
 
 ```ts
-import { mergePdfs } from 'pdflet'
+import { mergePdfs } from 'pdfbind'
 
 const bytes = await mergePdfs([bufferA, bufferB], {
   trimBottom: 40,
@@ -165,7 +165,7 @@ const bytes = await mergePdfs([bufferA, bufferB], {
 Download a list of PDF URLs in batches. Failed downloads are silently skipped.
 
 ```ts
-import { downloadAll } from 'pdflet'
+import { downloadAll } from 'pdfbind'
 
 const buffers = await downloadAll(urls, 'https://example.com/', 5, 30_000)
 ```
@@ -175,7 +175,7 @@ const buffers = await downloadAll(urls, 'https://example.com/', 5, 30_000)
 Extract PDF links from an HTML string. Resolves relative and protocol-relative URLs.
 
 ```ts
-import { extractPdfLinks } from 'pdflet'
+import { extractPdfLinks } from 'pdfbind'
 
 const links = extractPdfLinks(html, 'https://example.com/', { selector: '.content' })
 ```

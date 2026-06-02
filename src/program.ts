@@ -35,7 +35,7 @@ const resolveOutputPath = async (desired: string): Promise<string> => {
 const num = (val: unknown, fallback: number): number => (typeof val === 'string' ? Math.max(0, Number(val)) || fallback : fallback)
 
 export const createProgram = () =>
-  command('pdflet', '<url> [output]')
+  command('pdfbind', '<url> [output]')
     .description('Scrape all PDFs from a webpage and merge them into one booklet')
     .option('t', 'trim', '[pts]', 'Crop all four sides by N points')
     .option('v', 'trim-vertical', '[pts]', 'Crop top and bottom by N points')
