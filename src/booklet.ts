@@ -23,6 +23,7 @@ export interface BookletOptions {
   concurrent?: number
   timeout?: number
   onProgress?: (stage: string, completed?: number, total?: number) => void
+  onFailed?: (count: number) => void
 }
 
 export interface BookletResult {
@@ -67,7 +68,7 @@ export const findPdfUrls = async (url: string, options: BookletOptions = {}): Pr
 }
 
 export const buildBooklet = async (url: string, options: BookletOptions = {}): Promise<BookletResult> => {
-  const { concurrent = 5, timeout = 30_000, onProgress } = options
+  const { concurrent = 5, timeout = 30_000, onProgress, onFailed } = options
   const mergeOptions = resolveTrim(options)
 
   onProgress?.('scanning')
@@ -82,6 +83,9 @@ export const buildBooklet = async (url: string, options: BookletOptions = {}): P
   })
 
   if (buffers.length === 0) throw new Error('Failed to download any PDFs')
+
+  const failed = total - buffers.length
+  if (failed > 0) onFailed?.(failed)
 
   onProgress?.('merging', 0, buffers.length)
   const bytes = await mergePdfs(buffers, mergeOptions)

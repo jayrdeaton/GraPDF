@@ -101,15 +101,15 @@ export const createProgram = () =>
             if (stage === 'scanning') spinner.message(cosmetic.faint('Scanning for PDFs…'))
             else if (stage === 'downloading') spinner.message(cosmetic.faint(`Downloading ${completed} / ${total} PDF${plural(total ?? 0)}…`))
             else if (stage === 'merging') spinner.message(cosmetic.faint(`Merging ${total} PDF${plural(total ?? 0)}…`))
+          },
+          onFailed: (failed) => {
+            spinner.warn(cosmetic.yellow(`${failed} PDF${failed !== 1 ? 's' : ''} failed to download`))
           }
         })
 
         const slug = slugFromUrl(url)
         const defaultName = outFile ? (path.extname(outFile) ? outFile : `${outFile}.pdf`) : `${slug}.pdf`
         const dest = await resolveOutputPath(defaultName)
-
-        const failed = attempted - pdfCount
-        if (failed > 0) spinner.warn(cosmetic.yellow(`${failed} PDF${failed !== 1 ? 's' : ''} failed to download`))
 
         spinner.message(cosmetic.faint(`Saving ${dest}`))
         await fs.writeFile(dest, bytes)
