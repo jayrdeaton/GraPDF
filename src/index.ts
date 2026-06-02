@@ -1,0 +1,6 @@
+export type { BookletOptions, BookletResult } from './booklet'
+export { buildBooklet, findPdfUrls } from './booklet'
+export { downloadAll, downloadPdf } from './downloader'
+export type { MergeOptions } from './merger'
+export { mergePdfs } from './merger'
+export { extractPdfLinks, scrapePdfLinks } from './scraper'

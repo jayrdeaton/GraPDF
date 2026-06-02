@@ -1,0 +1,10 @@
+dist/
+.next/
+node_modules/
+books/
+downloads/
+*.html
+*.pdf
+.env*.local
+.DS_Store
+coverage/
