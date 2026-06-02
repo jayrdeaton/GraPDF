@@ -22,11 +22,12 @@ export interface BookletOptions {
   // download
   concurrent?: number
   timeout?: number
-  onProgress?: (message: string) => void
+  onProgress?: (stage: string, completed?: number, total?: number) => void
 }
 
 export interface BookletResult {
   pdfCount: number
+  attempted: number
   bytes: Uint8Array
 }
 
@@ -69,18 +70,21 @@ export const buildBooklet = async (url: string, options: BookletOptions = {}): P
   const { concurrent = 5, timeout = 30_000, onProgress } = options
   const mergeOptions = resolveTrim(options)
 
-  onProgress?.('Scanning for PDFs…')
+  onProgress?.('scanning')
   const pdfUrls = await findPdfUrls(url, options)
 
   if (pdfUrls.length === 0) throw new Error('No PDF links found on that page')
 
-  onProgress?.(`Downloading ${pdfUrls.length} PDF${pdfUrls.length !== 1 ? 's' : ''}…`)
-  const buffers = await downloadAll(pdfUrls, url, concurrent, timeout)
+  const total = pdfUrls.length
+  onProgress?.('downloading', 0, total)
+  const buffers = await downloadAll(pdfUrls, url, concurrent, timeout, (completed) => {
+    onProgress?.('downloading', completed, total)
+  })
 
   if (buffers.length === 0) throw new Error('Failed to download any PDFs')
 
-  onProgress?.(`Merging ${buffers.length} PDF${buffers.length !== 1 ? 's' : ''}…`)
+  onProgress?.('merging', 0, buffers.length)
   const bytes = await mergePdfs(buffers, mergeOptions)
 
-  return { pdfCount: buffers.length, bytes }
+  return { pdfCount: buffers.length, attempted: total, bytes }
 }
