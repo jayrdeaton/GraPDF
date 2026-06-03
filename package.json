@@ -1,6 +1,6 @@
 {
   "name": "pdfbind",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Scrape all PDFs from a webpage and merge them into one downloadable booklet",
   "keywords": [
     "cli",
