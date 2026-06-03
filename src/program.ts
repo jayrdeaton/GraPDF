@@ -10,7 +10,15 @@ import { buildBooklet, findPdfUrls } from './booklet'
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const cosmetic = cosmeticLib as any
 
-const slugFromUrl = (url: string): string => url.split('/').filter(Boolean).pop() ?? 'booklet'
+const slugFromUrl = (url: string): string => {
+  try {
+    const hostname = new URL(url).hostname.replace(/^www\./, '')
+    const parts = hostname.split('.')
+    return parts.slice(0, -1).join('-') || 'booklet'
+  } catch {
+    return 'booklet'
+  }
+}
 
 const resolveOutputPath = async (desired: string): Promise<string> => {
   try {
