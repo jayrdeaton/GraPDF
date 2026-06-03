@@ -82,9 +82,9 @@ describe('mergePdfs', () => {
 })
 
 describe('createProgram', () => {
-  it('creates a command named pdfbind', () => {
+  it('creates a command named grapdf', () => {
     const cmd = createProgram()
-    expect(cmd.name).toBe('pdfbind')
+    expect(cmd.name).toBe('grapdf')
   })
 
   it('has a description', () => {

@@ -1,30 +1,30 @@
-# pdfbind
+# grapdf
 
 Scrape all PDFs linked on a webpage and merge them into one downloadable booklet.
 
 ```sh
-pdfbind https://example.com/coloring-pages/
+grapdf https://example.com/coloring-pages/
 ```
 
 ## Installation
 
 ```sh
-npm install -g pdfbind
+npm install -g grapdf
 ```
 
 Or run without installing:
 
 ```sh
-npx pdfbind <url>
+npx grapdf <url>
 ```
 
 ## CLI
 
 ```sh
-pdfbind <url> [output]
+grapdf <url> [output]
 ```
 
-If no output path is given, the filename is derived from the URL slug (e.g. `coloring-pages.pdf`). If a name is given without an extension, `.pdf` is added automatically. Existing files are never overwritten — pdfbind increments the filename (`booklet-1.pdf`, `booklet-2.pdf`, etc.).
+If no output path is given, the filename is derived from the URL slug (e.g. `coloring-pages.pdf`). If a name is given without an extension, `.pdf` is added automatically. Existing files are never overwritten — grapdf increments the filename (`booklet-1.pdf`, `booklet-2.pdf`, etc.).
 
 ### Options
 
@@ -75,41 +75,41 @@ More specific flags override less specific ones. `--trim 20 --trim-bottom 40` cr
 
 ```sh
 # Basic usage
-pdfbind https://example.com/coloring-pages/
+grapdf https://example.com/coloring-pages/
 
 # Custom output filename
-pdfbind https://example.com/coloring-pages/ my-booklet.pdf
+grapdf https://example.com/coloring-pages/ my-booklet.pdf
 
 # Remove a 40pt branding border from the bottom of each page
-pdfbind https://example.com/coloring-pages/ --trim-bottom 40
+grapdf https://example.com/coloring-pages/ --trim-bottom 40
 
 # Preview what would be downloaded before committing
-pdfbind https://example.com/coloring-pages/ --dry-run
+grapdf https://example.com/coloring-pages/ --dry-run
 
 # Limit to the first 5 PDFs, sorted alphabetically
-pdfbind https://example.com/coloring-pages/ --sort --limit 5
+grapdf https://example.com/coloring-pages/ --sort --limit 5
 
 # Only grab PDFs whose URLs contain "chapter"
-pdfbind https://example.com/book/ --include chapter
+grapdf https://example.com/book/ --include chapter
 
 # Exclude any PDFs whose URLs contain "sample"
-pdfbind https://example.com/book/ --exclude sample
+grapdf https://example.com/book/ --exclude sample
 
 # Scope link search to a specific section of the page
-pdfbind https://example.com/downloads/ --selector .downloads-grid
+grapdf https://example.com/downloads/ --selector .downloads-grid
 
 # Combine filters: search within a section, include a pattern, trim the bottom
-pdfbind https://example.com/coloring-pages/ --selector .content --include pokemon --trim-bottom 40
+grapdf https://example.com/coloring-pages/ --selector .content --include pokemon --trim-bottom 40
 ```
 
 ## Programmatic API
 
 ```sh
-npm install pdfbind
+npm install grapdf
 ```
 
 ```ts
-import { buildBooklet, findPdfUrls, mergePdfs, downloadAll, extractPdfLinks } from 'pdfbind'
+import { buildBooklet, findPdfUrls, mergePdfs, downloadAll, extractPdfLinks } from 'grapdf'
 ```
 
 ### `buildBooklet(url, options?): Promise<{ pdfCount, bytes }>`
@@ -150,7 +150,7 @@ const urls = await findPdfUrls('https://example.com/coloring-pages/', {
 Merge an array of PDF buffers into one.
 
 ```ts
-import { mergePdfs } from 'pdfbind'
+import { mergePdfs } from 'grapdf'
 
 const bytes = await mergePdfs([bufferA, bufferB], {
   trimBottom: 40,
@@ -165,7 +165,7 @@ const bytes = await mergePdfs([bufferA, bufferB], {
 Download a list of PDF URLs in batches. Failed downloads are silently skipped.
 
 ```ts
-import { downloadAll } from 'pdfbind'
+import { downloadAll } from 'grapdf'
 
 const buffers = await downloadAll(urls, 'https://example.com/', 5, 30_000)
 ```
@@ -175,7 +175,7 @@ const buffers = await downloadAll(urls, 'https://example.com/', 5, 30_000)
 Extract PDF links from an HTML string. Resolves relative and protocol-relative URLs.
 
 ```ts
-import { extractPdfLinks } from 'pdfbind'
+import { extractPdfLinks } from 'grapdf'
 
 const links = extractPdfLinks(html, 'https://example.com/', { selector: '.content' })
 ```
