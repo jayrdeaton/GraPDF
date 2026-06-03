@@ -1,6 +1,6 @@
 {
   "name": "grapdf",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Scrape all PDFs from a webpage and merge them into one downloadable booklet",
   "keywords": [
     "cli",
