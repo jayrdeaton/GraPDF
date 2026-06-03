@@ -1,5 +1,5 @@
 {
-  "name": "pdfbind",
+  "name": "grapdf",
   "version": "1.0.2",
   "description": "Scrape all PDFs from a webpage and merge them into one downloadable booklet",
   "keywords": [
@@ -11,7 +11,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/jayrdeaton/pdfbind.git"
+    "url": "https://github.com/jayrdeaton/grapdf.git"
   },
   "license": "MIT",
   "author": "Jay Deaton",
@@ -25,7 +25,7 @@
     }
   },
   "bin": {
-    "pdfbind": "./dist/cli.mjs"
+    "grapdf": "./dist/cli.mjs"
   },
   "files": [
     "dist"
