@@ -1,14 +1,9 @@
 /* eslint-disable no-console */
-import cosmeticLib from 'cosmetic'
 import fs from 'fs/promises'
 import path from 'path'
-import { command } from 'termkit'
-import { Spinner } from 'termpulse'
+import { Color as cosmetic, type ParsedOptions, Program, Spinner } from 'termkit'
 
 import { buildBooklet, findPdfUrls } from './booklet'
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const cosmetic = cosmeticLib as any
 
 const slugFromUrl = (url: string): string => {
   try {
@@ -43,7 +38,7 @@ const resolveOutputPath = async (desired: string): Promise<string> => {
 const num = (val: unknown, fallback: number): number => (typeof val === 'string' ? Math.max(0, Number(val)) || fallback : fallback)
 
 export const createProgram = () =>
-  command('grapdf', '<url> [output]')
+  Program.command('grapdf', '<url> [output]')
     .description('Scrape all PDFs from a webpage and merge them into one booklet')
     .option('t', 'trim', '[pts]', 'Crop all four sides by N points')
     .option('v', 'trim-vertical', '[pts]', 'Crop top and bottom by N points')
@@ -61,7 +56,7 @@ export const createProgram = () =>
     .option('l', 'limit', '[n]', 'Maximum number of PDFs to include')
     .option(null, 'timeout', '[ms]', 'Per-PDF download timeout in milliseconds (default: 30000)')
     .option('d', 'dry-run', null, 'Print the list of PDF URLs that would be fetched, then exit')
-    .action(async (options) => {
+    .action(async (options: ParsedOptions) => {
       const url = options.url as string
       const outFile = options.output as string | undefined
       const isDryRun = Boolean(options['dry-run'])
@@ -106,9 +101,9 @@ export const createProgram = () =>
           ...bookletOptions,
           onProgress: (stage, completed, total) => {
             const plural = (n: number) => (n !== 1 ? 's' : '')
-            if (stage === 'scanning') spinner.message(cosmetic.faint('Scanning for PDFs…'))
-            else if (stage === 'downloading') spinner.message(cosmetic.faint(`Downloading ${completed} / ${total} PDF${plural(total ?? 0)}…`))
-            else if (stage === 'merging') spinner.message(cosmetic.faint(`Merging ${total} PDF${plural(total ?? 0)}…`))
+            if (stage === 'scanning') spinner.update(cosmetic.faint('Scanning for PDFs…'))
+            else if (stage === 'downloading') spinner.update(cosmetic.faint(`Downloading ${completed} / ${total} PDF${plural(total ?? 0)}…`))
+            else if (stage === 'merging') spinner.update(cosmetic.faint(`Merging ${total} PDF${plural(total ?? 0)}…`))
           },
           onFailed: (failed) => {
             spinner.warn(cosmetic.yellow(`${failed} PDF${failed !== 1 ? 's' : ''} failed to download`))
@@ -119,7 +114,7 @@ export const createProgram = () =>
         const defaultName = outFile ? (path.extname(outFile) ? outFile : `${outFile}.pdf`) : `${slug}.pdf`
         const dest = await resolveOutputPath(defaultName)
 
-        spinner.message(cosmetic.faint(`Saving ${dest}`))
+        spinner.update(cosmetic.faint(`Saving ${dest}`))
         await fs.writeFile(dest, bytes)
         spinner.succeed(`${pdfCount} PDF${pdfCount !== 1 ? 's' : ''} saved to ${cosmetic.underline.cyan(dest)}`).stop()
       } catch (err) {

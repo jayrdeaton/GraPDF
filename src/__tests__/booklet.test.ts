@@ -1,12 +1,4 @@
-jest.mock('termpulse', () => ({
-  __esModule: true,
-  Spinner: jest.fn().mockImplementation(() => ({ start: jest.fn(), stop: jest.fn(), message: jest.fn() }))
-}))
-
-jest.mock('cosmetic', () => ({
-  __esModule: true,
-  default: new Proxy({}, { get: () => new Proxy((s: string) => s, { get: () => (s: string) => s }) })
-}))
+import type { Option } from 'termkit'
 
 import { extractPdfLinks } from '../scraper'
 import { mergePdfs } from '../merger'
@@ -109,14 +101,14 @@ describe('createProgram', () => {
 
   it.each(flagsWithShort)('has a -$short/--$long option', ({ long, short }) => {
     const cmd = createProgram()
-    const opt = cmd.optionsArray.find((o) => o.long === long)
+    const opt = cmd.optionsArray.find((o: Option) => o.long === long)
     expect(opt).toBeDefined()
     expect(opt?.short).toBe(short)
   })
 
   it.each(flagsWithoutShort.map((long) => ({ long })))('has a --$long option', ({ long }) => {
     const cmd = createProgram()
-    const opt = cmd.optionsArray.find((o) => o.long === long)
+    const opt = cmd.optionsArray.find((o: Option) => o.long === long)
     expect(opt).toBeDefined()
   })
 })
