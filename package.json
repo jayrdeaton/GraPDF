@@ -53,14 +53,14 @@
     "termkit": "^2.4.8"
   },
   "devDependencies": {
-    "@infinitetoken/eslint-config": "^0.1.1",
-    "@infinitetoken/tsconfig": "^0.1.1",
+    "@infinitetoken/eslint-config": "0.2.0",
+    "@infinitetoken/jest-config": "^0.2.4",
+    "@infinitetoken/tsconfig": "^0.4.1",
     "@types/jest": "^30.0.0",
     "@types/node": "^26.1.1",
     "eslint": "^10.8.0",
     "jest": "^30.0.0",
     "prettier": "^3.9.6",
-    "ts-jest": "^29.0.0",
     "ts-node": "^10.9.2",
     "tsup": "^8.5.1",
     "typescript": "^6.0.0"
