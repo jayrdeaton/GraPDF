@@ -24,7 +24,7 @@ npx grapdf <url>
 grapdf <url> [output]
 ```
 
-If no output path is given, the filename is derived from the URL slug (e.g. `coloring-pages.pdf`). If a name is given without an extension, `.pdf` is added automatically. Existing files are never overwritten — grapdf increments the filename (`booklet-1.pdf`, `booklet-2.pdf`, etc.).
+If no output path is given, the filename is derived from the URL slug (e.g. `coloring-pages.pdf`). If a name is given without an extension, `.pdf` is added automatically. Existing files are never overwritten - grapdf increments the filename (`booklet-1.pdf`, `booklet-2.pdf`, etc.).
 
 ### Options
 
@@ -47,8 +47,8 @@ More specific flags override less specific ones. `--trim 20 --trim-bottom 40` cr
 | Flag | Description |
 |------|-------------|
 | `--selector <css>` | Scope PDF link search to a CSS selector (e.g. `.content`) |
-| `-i`, `--include <pattern>` | Regex pattern — only include matching PDF URLs |
-| `-e`, `--exclude <pattern>` | Regex pattern — exclude matching PDF URLs |
+| `-i`, `--include <pattern>` | Regex pattern - only include matching PDF URLs |
+| `-e`, `--exclude <pattern>` | Regex pattern - exclude matching PDF URLs |
 
 **Ordering**
 
@@ -114,7 +114,7 @@ import { buildBooklet, findPdfUrls, mergePdfs, downloadAll, extractPdfLinks } fr
 
 ### `buildBooklet(url, options?): Promise<{ pdfCount, bytes }>`
 
-Full pipeline — scrape, download, and merge in one call.
+Full pipeline - scrape, download, and merge in one call.
 
 ```ts
 const { pdfCount, bytes } = await buildBooklet('https://example.com/coloring-pages/', {
